@@ -1,18 +1,46 @@
+name: Mixed inputs
+
 on:
   workflow_dispatch:
     inputs:
-      stuff:
-        description: 'Log stuff'
-        required: true
+      name:
         type: choice
-        options:
-          - info
-          - warning
-          - debug
+        description: Who to greet
+        options: 
+        - monalisa
+        - cschleiden
+      message:
+        required: true
+      use-emoji:
+        type: boolean
+        description: Include 🎉🤣 emojis
+      environment:
+        type: environment
 
 jobs:
-  print-tag:
+  greet:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Echo vairable
-        run: echo Input is ${{ inputs.stuff }}
+    - name: Send greeting
+      run: echo "${{ github.event.inputs.message }} ${{ fromJSON('["", "🥳"]')[github.event.inputs.use-emoji == 'true'] }} ${{ github.event.inputs.name }}"
+
+
+        #on:
+        #  workflow_dispatch:
+        #    inputs:
+        #      stuff:
+        #        description: 'Log stuff'
+        #        required: true
+        #        type: choice
+        #        options:
+        #          - info
+        #          - warning
+        #          - debug
+        #
+        #jobs:
+        #  print-tag:
+        #    runs-on: ubuntu-latest
+        #    steps:
+        #      - name: Echo vairable
+        #        run: echo Input is ${{ inputs.stuff }}
