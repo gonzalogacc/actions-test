@@ -1,0 +1,18 @@
+on:
+  workflow_dispatch:
+    inputs:
+      stuff:
+        description: 'Log stuff'
+        required: true
+        type: choice
+        options:
+          - info
+          - warning
+          - debug
+
+jobs:
+  print-tag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo vairable
+        run: echo Input is ${{ inputs.stuff }}
