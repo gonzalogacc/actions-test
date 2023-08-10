@@ -1,10 +1,12 @@
 name: Mixed inputs
 
-on:
-  workflow_dispatch:
-    inputs:
-      stack_name:
-        required: true
+  #on:
+  #  workflow_dispatch:
+  #    inputs:
+  #      stack_name:
+  #        required: true
+
+on: [push]
 
 jobs:
   run_pipeline:
