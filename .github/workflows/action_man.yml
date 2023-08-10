@@ -10,5 +10,10 @@ jobs:
   run_pipeline:
     runs-on: ubuntu-latest
     steps:
+    - name: Checkout code
+      id: checkout
+      uses: actions/checkout@v3
+      run: echo "Ready repo"
     - name: Check stack name
-      run: echo "${{ github.event.inputs.stack_name }}"
+      run: |
+        ls ${{ github.workspace }}
