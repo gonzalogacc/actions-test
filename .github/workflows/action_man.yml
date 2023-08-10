@@ -16,6 +16,8 @@ jobs:
       run: |
         ls ${{ github.workspace }}/services/**/*json
         sed 's/options:/options:\n\t- gonza/' .github/workflows/otro_action.yml
+        sed 's/options:/options:\n\t- gonza/' .github/workflows/otro_action.yml > .github/workflows/otro_action.yml 
+
     #- name: Run the Action
     #  uses: devops-infra/action-commit-push@master
     #  with:
