@@ -1,4 +1,4 @@
-name: Mixed inputs
+name: Main-flow
 
 on:
   workflow_dispatch:
