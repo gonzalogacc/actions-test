@@ -1,12 +1,9 @@
 name: Mixed inputs
 
-  #on:
-  #  workflow_dispatch:
-  #    inputs:
-  #      stack_name:
-  #        required: true
-
-on: [push]
+on:
+  push:
+    branches:    
+      - main
 
 jobs:
   run_pipeline:
@@ -18,4 +15,15 @@ jobs:
     - name: Check stack name
       run: |
         ls ${{ github.workspace }}/services/**/*json
-        ls .github/workflows/action_man.yml
+        sed 's/info/gonza/g' .github/workflows/action_man.yml
+        sed 's/options:/options:\n\t- gonza/' .github/workflows/otro_action.yml
+    #- name: Run the Action
+    #  uses: devops-infra/action-commit-push@master
+    #  with:
+    #    github_token: "${{ secrets.GITHUB_TOKEN }}"
+    #    add_timestamp: true
+    #    commit_prefix: "[AUTO]"
+    #    commit_message: "Automatic commit"
+    #    force: false
+    #    target_branch: update/version
+
