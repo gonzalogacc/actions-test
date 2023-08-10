@@ -18,3 +18,4 @@ jobs:
     - name: Check stack name
       run: |
         ls ${{ github.workspace }}/services/**/*json
+        ls ${{ github.workspace }}/.github/workflows/*yaml
