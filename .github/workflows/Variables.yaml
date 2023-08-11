@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      variable1: ${{steps.setv.outputs.variable1}}
+      variable1: ${{ steps.setv.outputs.variable1 }}
 
     steps:
       - name: setv
@@ -25,4 +25,5 @@ jobs:
           OUTPUT1: ${{ needs.set-variable.outputs.vairable1 }}
         run: |
           echo "echoing the variable"
+          echo $ {{ needs.set-variable.outputs.vairable1 }}
           echo $OUTPUT1
