@@ -66,8 +66,10 @@ jobs:
       - name: Commit to git
         id: commit_files
         run: |
+            echo $NEED_PUSH
             if [[ $NEED_PUSH -eq 1 ]]
             then
+              echo "Cahnges detected pushing"
               git config --global user.name 'Gonza'
               git config --global user.email 'gonzalogacc@users.noreply.github.com'
               git add $ACTION_FILE 
