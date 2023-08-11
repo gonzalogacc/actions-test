@@ -25,7 +25,7 @@ jobs:
       - name: despues
         id: despues
         run: |
-          echo "Varible es ${variable2}"
+          echo "Varible es ${{ steps.checkout.outputs.variable1 }} "
 
   read_variable:
     runs-on: ubuntu-latest
