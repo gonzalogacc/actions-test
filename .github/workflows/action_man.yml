@@ -39,9 +39,9 @@ jobs:
         fi
 
         ## Delete old options
-        grep -vf <(echo $FILE_STACKS) .github/workflows/otro_action.yml > .github/workflows/otro_action.yml 
+        grep -vf <(echo $FILE_STACKS) .github/workflows/otro_action.yml > .github/workflows/temp.yml
         ## Insert new options
-        sed "s/options:/options:\n        ${OUTPUT}/" .github/workflows/otro_action.yml > .github/workflows/otro_action.yml
+        sed "s/options:/options:\n        ${OUTPUT}/" .github/workflows/temp.yml > .github/workflows/otro_action.yml
 
         echo "_----Result----_"
         cat .github/workflows/otro_action.yml
