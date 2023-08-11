@@ -15,18 +15,15 @@ jobs:
       uses: actions/checkout@v3
     - name: Check stack name
       run: |
-        ls ${{ github.workspace }}/services/**/*json
+        ACTION_FILE=.github/workflows/otro_action.yml
+        STACKS_DIR=services
 
         ## Get a list of stacks listed in the yaml and a list of stacks in the source code
-        FILE_STACKS=$(sed -n '/options/,/jobs/p' .github/workflows/otro_action.yml | grep '-' | tr -dc '[:alnum:]\n\r\t' | sort | uniq)
-        SRC_STACKS=$(ls services/**/stack_manifest.json | rev | cut -d'/' -f 2 | rev | sort | uniq)
+        FILE_STACKS=$(sed -n '/options/,/jobs/p' $ACTION_FILE | grep '-' | tr -dc '[:alnum:]\n\r\t' | sort | uniq)
+        SRC_STACKS=$(ls ${STACKS_DIR}/**/stack_manifest.json | rev | cut -d'/' -f 2 | rev | sort | uniq)
         NEW_STACKS=$(comm -3 <(echo $FILE_STACKS) <(echo $SRC_STACKS))
 
-        echo "Reg stacks ${FILE_STACKS}"
-        echo "Src stacks ${SRC_STACKS}"
-        echo "New stack ${NEW_STACKS}" 
-
-        ## Compare to detect changes
+        ## Compare stacks to detect changes
         unset UPDATE
         UPDATE=$(comm -3 <(echo $FILE_STACKS) <(echo $SRC_STACKS) | wc -l)
 
@@ -43,15 +40,15 @@ jobs:
         ## Delete old options
         for line in $FILE_STACKS
         do 
-          echo "- ${line}" >> temp_stack_list.txt
+          echo "- ${line}" >> /tmp/temp_stack_list.txt
         done
-        grep -v -f temp_stack_list.txt .github/workflows/otro_action.yml > .github/workflows/temp.yml
+        grep -v -f /tmp/temp_stack_list.txt $ACTION_FILE > /tmp/temp.yml
 
-        ## Insert new options
-        sed "s/options:/options: ${OUTPUT}/" .github/workflows/temp.yml > .github/workflows/otro_action.yml
+        ## Insert new options and replace file
+        sed "s/options:/options: ${OUTPUT}/" /tmp/temp.yml > $ACTION_FILE
 
         echo "_----Result----_"
-        cat .github/workflows/otro_action.yml
+        cat $ACTION_FILE
         
     #- name: Run the Action
     #  uses: devops-infra/action-commit-push@master
