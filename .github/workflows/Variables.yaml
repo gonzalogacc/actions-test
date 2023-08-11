@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      variable1: ${{ steps.setv.outputs.variable1 }}
+      variable1: ${{ steps.set-variable.outputs.variable1 }}
 
     steps:
       - name: Checkout code
