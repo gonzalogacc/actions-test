@@ -19,17 +19,19 @@ jobs:
       run: |
         ls ${{ github.workspace }}/services/**/*json
 
+        ## Get a list of stacks listed in the yaml and a list of stacks in the source code
         FILE_STACKS=$(sed -n '/options/,/jobs/p' .github/workflows/otro_action.yml | grep '-' | tr -dc '[:alnum:]\n\r\t' | sort | uniq)
         SRC_STACKS=$(ls services/**/stack_manifest.json | rev | cut -d'/' -f 2 | rev | sort | uniq)
 
-        ## Compares the stacks in the actions script vs the stacks found in the services directory, if there is a difference sets update to 1 to add the missing (replace entire block so supports deleting stacks)
-        UPDATE = $(comm -3 <(echo $FILE_STACKS) <(echo $SRC_STACKS) | wc -l)
+        echo "Reg stacks ${FILE_STACKS}"
+        echo "Src stacks ${SRC_STACKS}"
 
-        echo "-----------"
+        ## Compare to detect changes
+        UPDATE = $(comm -3 <(echo $FILE_STACKS) <(echo $SRC_STACKS) | wc -l)
 
         if [[ $UPDATE -ge 1 ]]
         then
-          echo "New stack detected, updating widget"
+          echo "New stack found, updating yaml"
           for STACK in $SRC_STACKS
           do
             OUTPUT+="- $STACK\n          "
