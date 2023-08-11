@@ -42,6 +42,7 @@ jobs:
 
         ## Delete old options
         #grep -v -f <(echo $FILE_STACKS) .github/workflows/otro_action.yml > .github/workflows/temp.yml
+        man grep 
         grep -v stack .github/workflows/otro_action.yml > .github/workflows/temp.yml
 
         echo "_----Result----_"
