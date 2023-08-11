@@ -36,7 +36,7 @@ jobs:
           echo "New stack found, updating yaml"
           for STACK in $SRC_STACKS
           do
-            OUTPUT+="- $STACK\n        "
+            OUTPUT+="\n        - $STACK"
           done
         fi
 
