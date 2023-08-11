@@ -6,8 +6,8 @@ on:
       required: true
       type: choice
       options:
-        - info
-        - debug
+        - stack1
+        - stack2
 
 jobs:
   run_pipeline:
