@@ -6,14 +6,11 @@ on:
     branches:    
       - main
 
-env:
-  NEED_PUSH=false
-
 jobs:
   run_pipeline:
     runs-on: ubuntu-latest
     outputs:
-      need_push: ${{ steps.update_stacks.NEED_PUSH}}
+      need_push: ${{ steps.update_stacks.NEED_PUSH }}
 
     steps:
     - name: Checkout code
