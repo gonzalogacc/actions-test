@@ -10,7 +10,7 @@ jobs:
   run_pipeline:
     runs-on: ubuntu-latest
     outputs:
-      need_push: ${{ steps.update_stacks.NEED_PUSH }}
+      need_push: ${{steps.update_stacks.need_push}}
 
     steps:
       - name: Checkout code
@@ -55,7 +55,10 @@ jobs:
             cat $ACTION_FILE
             
             ## Update variable to tell the next step to commit and push
-            echo "NEED_PUSH=1" >> $GITHUB_OUTPUT
+            echo "need_push=1" >> $GITHUB_OUTPUT
+          else
+            echo "No changes detected"
+            echo "need_push=0" >> $GITHUB_OUTPUT
           fi
 
   commit_and_push:
