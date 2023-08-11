@@ -34,11 +34,13 @@ jobs:
           echo "New stack found, updating yaml"
           for STACK in $SRC_STACKS
           do
-            OUTPUT+="- $STACK\n          "
+            OUTPUT+="- $STACK\n        "
           done
         fi
 
-        #sed "s/options:/options:\n\t${OUTPUT}/" .github/workflows/otro_action.yml
+        sed "s/options:/options:\n        ${OUTPUT}/" .github/workflows/otro_action.yml
+        
+        echo "_------_"
         echo $OUTPUT
         
     #- name: Run the Action
