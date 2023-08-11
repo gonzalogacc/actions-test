@@ -64,7 +64,7 @@ jobs:
     steps:
       - name: sports
         env:
-          OUTPUT1: ${{needs.run_pipeline.outputs.NEED_PUSH}}
+          OUTPUT1: ${{ needs.run_pipeline.outputs.need_push }}
         run: echo "$OUTPUT1"
 
     #- name: Run the Action
