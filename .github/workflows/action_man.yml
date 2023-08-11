@@ -41,7 +41,6 @@ jobs:
         fi
 
         ## Delete old options
-        rm temp_stack_list.txt
         for line in $FILE_STACKS
         do 
           echo "- ${line}" >> temp_stack_list.txt
