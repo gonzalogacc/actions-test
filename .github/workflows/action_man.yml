@@ -2,9 +2,9 @@ name: aux-flow
 
 on:
   workflow_dispatch:
-  push:
-    branches:    
-      - main
+#  push:
+#    branches:    
+#      - main
 
 jobs:
   run_pipeline:
@@ -56,6 +56,11 @@ jobs:
             
             ## Update variable to tell the next step to commit and push
             echo "need_push=1" >> $GITHUB_OUTPUT
+
+            git add $ACTION_FILE 
+            git commit -m "update actions in widget"
+            git push
+
           else
             echo "No changes detected"
             echo "need_push=0" >> $GITHUB_OUTPUT
