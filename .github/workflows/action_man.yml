@@ -20,12 +20,14 @@ jobs:
         ## Get a list of stacks listed in the yaml and a list of stacks in the source code
         FILE_STACKS=$(sed -n '/options/,/jobs/p' .github/workflows/otro_action.yml | grep '-' | tr -dc '[:alnum:]\n\r\t' | sort | uniq)
         SRC_STACKS=$(ls services/**/stack_manifest.json | rev | cut -d'/' -f 2 | rev | sort | uniq)
+        NEW_STACKS=$(comm -3 <(echo $FILE_STACKS) <(echo $SRC_STACKS))
 
         echo "Reg stacks ${FILE_STACKS}"
         echo "Src stacks ${SRC_STACKS}"
+        echo "New stack ${NEW_STACKS}" 
 
         ## Compare to detect changes
-        UPDATE = $(comm -3 <(echo $FILE_STACKS) <(echo $SRC_STACKS) | wc -l)
+        UPDATE=$(comm -3 <(echo $FILE_STACKS) <(echo $SRC_STACKS) | wc -l)
 
         if [[ $UPDATE -ge 1 ]]
         then
