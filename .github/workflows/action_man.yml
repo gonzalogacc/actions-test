@@ -27,7 +27,7 @@ jobs:
                 OUTPUT+="- $CONFIG_FILE\n         "
         done
 
-        sed 's/options:/options:\n\t${OUTPUT}/' .github/workflows/otro_action.yml
+        sed "s/options:/options:\n\t${OUTPUT}/" .github/workflows/otro_action.yml
         echo $OUTPUT
         
     #- name: Run the Action
