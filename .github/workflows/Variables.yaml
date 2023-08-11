@@ -22,8 +22,8 @@ jobs:
     needs: set-variable
     steps:
       - env:
-          OUTPUT1: ${{ needs.set-variable.outputs }}
+          OUTPUT1: ${{ needs.set-variable.outputs.variable1 }}
         run: |
           echo "echoing the variable"
-          echo ${{ needs.set-variable.outputs }}
+          echo ${{ needs.set-variable.outputs.variable1 }}
           echo $OUTPUT1
