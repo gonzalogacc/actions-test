@@ -18,7 +18,7 @@ jobs:
     - name: Check stack name
       run: |
         ls ${{ github.workspace }}/services/**/*json
-        sed 's/options:/options:\n\t- gonza/' .github/workflows/otro_action.yml
+        
 
         echo "-----------"
 
@@ -26,6 +26,8 @@ jobs:
         do
                 OUTPUT+="- $CONFIG_FILE\n         "
         done
+
+        sed 's/options:/options:\n\t${OUTPUT}/' .github/workflows/otro_action.yml
         echo $OUTPUT
         
     #- name: Run the Action
