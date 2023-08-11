@@ -19,6 +19,18 @@ jobs:
       run: |
         ls ${{ github.workspace }}/services/**/*json
 
+        ## Get all presently existing stacks (all items between options and jobs with a dash in the line)
+        sed -n '/options/,/jobs/p' .github/workflows/otro_action.yml | grep '-' | tr -dc '[:alnum:]\n\r\t' | sort | uniq > OLDS
+
+        ## Get all services in greensea 
+        ls services/**/stack_manifest.json | rev | cut -d'/' -f 2 | rev | sort | uniq > NEWS
+
+        ## Comm 
+        comm -1 <(sed -n '/options/,/jobs/p' .github/workflows/otro_action.yml | grep '-' | tr -dc '[:alnum:]\n\r\t' | sort | uniq) <(ls services/**/stack_manifest.json | rev | cut -d'/' -f 2 | rev | sort | uniq)
+        
+        ## Compares the stacks in the actions script vs the stacks found in the services directory, if there is a difference sets update to 1 to add the missing (replace entire block so supports deleting stacks)
+        comm -3 <(sed -n '/options/,/jobs/p' .github/workflows/otro_action.yml | grep '-' | tr -dc '[:alnum:]\n\r\t' | sort | uniq) <(ls services/**/stack_manifest.json | rev | cut -d'/' -f 2 | rev | sort | uniq) | wc -l
+
         echo "-----------"
 
         for STACK in $(ls services/**/*json)
