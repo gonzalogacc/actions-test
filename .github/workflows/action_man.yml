@@ -24,7 +24,7 @@ jobs:
 
         for CONFIG_FILE in $(ls services/**/*json)
         do
-                OUTPUT+="          - $CONFIG_FILE\n"
+                OUTPUT+="- $CONFIG_FILE\n         "
         done
         echo $OUTPUT
         
