@@ -13,50 +13,50 @@ jobs:
       need_push: ${{ steps.update_stacks.NEED_PUSH }}
 
     steps:
-    - name: Checkout code
-      id: checkout
-      uses: actions/checkout@v3
-    
-    - name: Check stack name
-      id: update_stacks
-      run: |
-        ACTION_FILE=.github/workflows/otro_action.yml
-        STACKS_DIR=services
+      - name: Checkout code
+        id: checkout
+        uses: actions/checkout@v3
+      
+      - name: Check stack name
+        id: update_stacks
+        run: |
+          ACTION_FILE=.github/workflows/otro_action.yml
+          STACKS_DIR=services
 
-        ## Get a list of stacks listed in the yaml and a list of stacks in the source code
-        FILE_STACKS=$(sed -n '/options/,/jobs/p' $ACTION_FILE | grep '-' | tr -dc '[:alnum:]\n\r\t' | sort | uniq)
-        SRC_STACKS=$(ls ${STACKS_DIR}/**/stack_manifest.json | rev | cut -d'/' -f 2 | rev | sort | uniq)
-        NEW_STACKS=$(comm -3 <(echo $FILE_STACKS) <(echo $SRC_STACKS))
+          ## Get a list of stacks listed in the yaml and a list of stacks in the source code
+          FILE_STACKS=$(sed -n '/options/,/jobs/p' $ACTION_FILE | grep '-' | tr -dc '[:alnum:]\n\r\t' | sort | uniq)
+          SRC_STACKS=$(ls ${STACKS_DIR}/**/stack_manifest.json | rev | cut -d'/' -f 2 | rev | sort | uniq)
+          NEW_STACKS=$(comm -3 <(echo $FILE_STACKS) <(echo $SRC_STACKS))
 
-        ## Compare stacks to detect changes
-        unset UPDATE
-        UPDATE=$(comm -3 <(echo $FILE_STACKS) <(echo $SRC_STACKS) | wc -l)
+          ## Compare stacks to detect changes
+          unset UPDATE
+          UPDATE=$(comm -3 <(echo $FILE_STACKS) <(echo $SRC_STACKS) | wc -l)
 
-        unset OUTPUT
-        if [[ $UPDATE -ge 1 ]]
-        then
-          echo "New stack found, updating yaml"
-          for STACK in $SRC_STACKS
-          do
-            OUTPUT+="\n        - $STACK"
-          done
+          unset OUTPUT
+          if [[ $UPDATE -ge 1 ]]
+          then
+            echo "New stack found, updating yaml"
+            for STACK in $SRC_STACKS
+            do
+              OUTPUT+="\n        - $STACK"
+            done
 
-          ## Delete old options
-          for line in $FILE_STACKS
-          do 
-            echo "- ${line}" >> /tmp/temp_stack_list.txt
-          done
-          grep -v -f /tmp/temp_stack_list.txt $ACTION_FILE > /tmp/temp.yml
+            ## Delete old options
+            for line in $FILE_STACKS
+            do 
+              echo "- ${line}" >> /tmp/temp_stack_list.txt
+            done
+            grep -v -f /tmp/temp_stack_list.txt $ACTION_FILE > /tmp/temp.yml
 
-          ## Insert new options and replace file
-          sed "s/options:/options: ${OUTPUT}/" /tmp/temp.yml > $ACTION_FILE
+            ## Insert new options and replace file
+            sed "s/options:/options: ${OUTPUT}/" /tmp/temp.yml > $ACTION_FILE
 
-          echo "_----Result----_"
-          cat $ACTION_FILE
-          
-          ## Update variable to tell the next step to commit and push
-          echo "NEED_PUSH=1" >> $GITHUB_OUTPUT
-        fi
+            echo "_----Result----_"
+            cat $ACTION_FILE
+            
+            ## Update variable to tell the next step to commit and push
+            echo "NEED_PUSH=1" >> $GITHUB_OUTPUT
+          fi
 
   commit_and_push:
     runs-on: ubuntu-latest
