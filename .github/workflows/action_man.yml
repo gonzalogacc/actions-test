@@ -27,8 +27,10 @@ jobs:
         echo "New stack ${NEW_STACKS}" 
 
         ## Compare to detect changes
+        unset UPDATE
         UPDATE=$(comm -3 <(echo $FILE_STACKS) <(echo $SRC_STACKS) | wc -l)
 
+        unset OUTPUT
         if [[ $UPDATE -ge 1 ]]
         then
           echo "New stack found, updating yaml"
@@ -40,6 +42,7 @@ jobs:
 
         ## Delete old options
         grep -vf <(echo $FILE_STACKS) .github/workflows/otro_action.yml > .github/workflows/temp.yml
+
         ## Insert new options
         sed "s/options:/options:\n        ${OUTPUT}/" .github/workflows/temp.yml > .github/workflows/otro_action.yml
 
