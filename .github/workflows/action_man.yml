@@ -18,13 +18,12 @@ jobs:
     - name: Check stack name
       run: |
         ls ${{ github.workspace }}/services/**/*json
-        
 
         echo "-----------"
 
-        for CONFIG_FILE in $(ls services/**/*json)
+        for STACK in $(ls services/**/*json)
         do
-                OUTPUT+="- $CONFIG_FILE\n         "
+                OUTPUT+="- $STACK\n          "
         done
 
         sed "s/options:/options:\n\t${OUTPUT}/" .github/workflows/otro_action.yml
