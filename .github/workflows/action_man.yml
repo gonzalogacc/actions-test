@@ -29,6 +29,7 @@ jobs:
 
         if [[ $UPDATE -ge 1 ]]
         then
+          echo "New stack detected, updating widget"
           for STACK in $SRC_STACKS
           do
             OUTPUT+="- $STACK\n          "
